@@ -1,3 +1,4 @@
+export { handleInput } from operation.js;
 
 function add(a, b) {
     return a + b;
@@ -28,4 +29,31 @@ function operate(a, b, operator) {
     } else if (operator === '*') {
         return multiply(a , b);
     }
+}
+
+function handleInput(type, value) {
+  switch (type) {
+    case 'number':
+      console.log(`Es un número o punto: ${value}`);
+      // Aquí irá tu función para ir formando los números en pantalla
+      break;
+
+    case 'operator':
+      console.log(`Es un operador: ${value}`);
+      
+      break;
+
+    case 'equals':
+      console.log('¡Hora de calcular el resultado!');
+      // Aquí ejecutarás tu función principal de cálculo u operate()
+      break;
+
+    case 'action':
+      console.log(`Es una acción especial: ${value}`);
+      // Aquí manejarás 'clear' (AC), cambiar signo (+/-), etc.
+      break;
+
+    default:
+      console.warn('Tipo de botón no reconocido');
+  }
 }

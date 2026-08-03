@@ -1,4 +1,5 @@
 // main.js
+import { handleInput } from "./operations";
 
 const calculatorButtons = [
     {text: 'AC', type: 'action', value: 'clear'},
@@ -51,3 +52,23 @@ function createCalculatorKeys() {
 }
 
 createCalculatorKeys();
+
+const keysContainer = document.querySelector('#keys-container');
+
+// Agregamos un solo listener para todos los clics
+keysContainer.addEventListener('click', (event) => {
+    const clickedElement = event.target;
+
+    // Validacion: Si el usuario hace click sobre espacio vacio/hueco entre botones,
+    // el target sera el div contenedor y no un boton.
+    if(clickedElement.tagName !== 'BUTTON') {
+        return;
+    }
+
+    // Extraemos los metadatos que le guardamos con data-* 
+    const type = clickedElement.dataset.type;
+    const value = clickedElement.dataset.value;
+
+    // Derivamos la accion segun el tipo de botom
+    handleInput(type, value);
+});
