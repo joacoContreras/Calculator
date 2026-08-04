@@ -12,7 +12,11 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    return a / b;
+    if( b === 0) {
+        return 0;
+    } else {
+        return a / b;
+    }
 }
 
 function negate (a) {
