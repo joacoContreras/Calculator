@@ -117,11 +117,21 @@ function handleInput(type, value) {
         updateDisplay(String(result));
 
       } else if (value === 'clear') {
-        let firstNumber = '';
-        let operator = '';
-        let secondNumber = '';
-        let shouldResetDisplay = true;
-        updateDisplay('');
+        firstNumber = '';
+        operator = '';
+        secondNumber = '';
+        shouldResetDisplay = true;
+        updateDisplay('0');
+      
+      } else if (value === 'percent') {
+        if (display.textContent === '0') return;
+        
+        const currentValue = Number(display.textContent);
+        const result = (Number(firstNumber) * currentValue)/100;
+
+        secondNumber = String(result);
+        updateDisplay(secondNumber);
+        shouldResetDisplay = true;
       }
 
       break;

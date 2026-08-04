@@ -31,6 +31,7 @@ function calculate(a, b, operator) {
     
     } else if (operator === '*') {
         return multiply(a , b);
+    
     }
 }
 
