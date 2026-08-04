@@ -1,10 +1,11 @@
 // main.js
-import { handleInput } from "./operations";
+import { calculate , negate} from './operations.js';
 
 const calculatorButtons = [
     {text: 'AC', type: 'action', value: 'clear'},
     {text: '+/-', type: 'action', value: 'negate'},
     {text: '%', type: 'action', value: 'percent'},
+    {text: '+', type: 'operator', value: '+'},
     {text: '÷', type: 'operator', value: '/'},
     {text: 'x', type: 'operator', value: '*'},
     {text: '-', type: 'operator', value: '-'},
@@ -53,8 +54,6 @@ function createCalculatorKeys() {
 
 createCalculatorKeys();
 
-const keysContainer = document.querySelector('#keys-container');
-
 // Agregamos un solo listener para todos los clics
 keysContainer.addEventListener('click', (event) => {
     const clickedElement = event.target;
@@ -72,3 +71,63 @@ keysContainer.addEventListener('click', (event) => {
     // Derivamos la accion segun el tipo de botom
     handleInput(type, value);
 });
+
+// Variables de Estado
+let firstNumber = '';
+let operator = '';
+let secondNumber = '';
+let shouldResetDisplay = false;
+
+const display = document.querySelector('#display');
+function updateDisplay(text) {
+  display.textContent = text;
+}
+
+function handleInput(type, value) {
+  switch (type) {
+    case 'number':
+      console.log(`Es un número o punto: ${value}`);
+      if (value === '.' && display.textContent.includes('.')) return;
+
+      if (display.textContent === '0' || shouldResetDisplay) {
+        updateDisplay(value);
+        shouldResetDisplay = false;
+      } else {
+        updateDisplay(display.textContent + value);
+      }
+      break;
+
+    case 'operator':
+      firstNumber = display.textContent;
+      operator = value;
+      shouldResetDisplay = true;      
+      break;
+
+    case 'equals':
+      secondNumber = display.textContent;
+      const result = calculate(Number(firstNumber), Number(secondNumber), operator);
+      updateDisplay(String(result));
+      break;
+
+    case 'action':
+      console.log(`Es una acción especial: ${value}`);
+      // Aquí manejarás 'clear' (AC), cambiar signo (+/-), etc.
+      if (value === 'negate') {
+        const result = negate(Number(firstNumber));
+        updateDisplay(String(result));
+
+      } else if (value === 'clear') {
+        let firstNumber = '';
+        let operator = '';
+        let secondNumber = '';
+        let shouldResetDisplay = true;
+        updateDisplay('');
+      }
+
+      break;
+
+    default:
+      console.warn('Tipo de botón no reconocido');
+  }
+}
+

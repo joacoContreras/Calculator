@@ -22,11 +22,8 @@
 .display {
     width: max-content;
     height: 25%;
-}
-
-.buttons {
-    width: max-content;
-    height: 75%;
+    display: flex;
+    padding: 10px;
 }
 
 .keys-container {
