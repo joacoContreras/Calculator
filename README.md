@@ -36,4 +36,4 @@ Este proyecto muestra una calculadora en pantalla con operaciones basicas y vari
 
 ## Captura de Pantalla
 
-(./images/cap_app.png)
+![Captura de la calculadora](./images/cap_app.png)
