@@ -1,5 +1,5 @@
 // main.js
-import { calculate , negate} from './operations.js';
+import { calculate , negate, formatResult} from './operations.js';
 
 const calculatorButtons = [
     {text: '%', type: 'action', value: 'percent'},
@@ -85,7 +85,7 @@ let shouldResetDisplay = false;
 
 const display = document.querySelector('#display');
 function updateDisplay(text) {
-  display.textContent = text;
+  display.textContent = formatResult(Number(text));
 }
 
 function handleInput(type, value) {

@@ -39,4 +39,11 @@ function calculate(a, b, operator) {
     }
 }
 
-export { calculate , negate };
+function formatResult(value) {
+    if (!Number.isFinite(value)) return 'Error';
+
+    const rounded = Number(value.toPrecision(12));
+    return String(rounded);
+}
+
+export { calculate , negate , formatResult };
