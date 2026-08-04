@@ -107,6 +107,11 @@ function handleInput(type, value) {
       break;
 
     case 'operator':
+      if (shouldResetDisplay) {
+        operator = value;
+        break;
+      }
+
       if (firstNumber !== '' && operator !== '') {
         secondNumber = display.textContent;
         const result = calculate(Number(firstNumber), Number(secondNumber), operator);
