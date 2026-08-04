@@ -31,8 +31,12 @@ function calculate(a, b, operator) {
         return subtract(a, b);
     
     } else if (operator === '/') {
-        return divide(a, b);
-    
+        if (b === 0) {
+            return "Can't divide by zero";
+        } else {
+            return divide(a, b);
+        }
+
     } else if (operator === '*') {
         return multiply(a , b);
     

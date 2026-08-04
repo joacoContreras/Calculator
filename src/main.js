@@ -85,7 +85,11 @@ let shouldResetDisplay = false;
 
 const display = document.querySelector('#display');
 function updateDisplay(text) {
-  display.textContent = formatResult(Number(text));
+  if(typeof text === 'number') {
+    display.textContent = formatResult(Number(text));
+  } else {
+    display.textContent = text;
+  }
 }
 
 function handleInput(type, value) {
