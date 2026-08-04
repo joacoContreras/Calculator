@@ -229,3 +229,56 @@ function handleInput(type, value) {
   }
 }
 
+// Soporte de teclado:
+document.addEventListener('keydown', (e) => {
+  const key = e.key;
+
+  // Números y punto
+  if ((key >= '0' && key <= '9') || key === '.') {
+    e.preventDefault();
+    handleInput('number', key);
+    return;
+  }
+
+  // Operadores comunes
+  if (key === '+' || key === '-' || key === '*' || key === '/') {
+    e.preventDefault();
+    handleInput('operator', key);
+    return;
+  }
+
+  // Enter o =
+  if (key === 'Enter' || key === '=') {
+    e.preventDefault();
+    handleInput('equals', '=');
+    return;
+  }
+
+  // Backspace -> borrar último dígito
+  if (key === 'Backspace') {
+    e.preventDefault();
+    handleInput('action', 'backspace');
+    return;
+  }
+
+  // Escape o Delete -> AC (limpiar todo)
+  if (key === 'Escape' || key === 'Delete') {
+    e.preventDefault();
+    handleInput('action', 'absolute-clear');
+    return;
+  }
+
+  // Porcentaje
+  if (key === '%') {
+    e.preventDefault();
+    handleInput('action', 'percent');
+    return;
+  }
+
+  // Negar (±) — uso de la tecla 'n' como atajo
+  if (key === 'n' || key === 'N') {
+    e.preventDefault();
+    handleInput('action', 'negate');
+    return;
+  }
+});
