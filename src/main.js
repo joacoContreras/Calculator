@@ -3,8 +3,8 @@ import { calculate , negate} from './operations.js';
 
 const calculatorButtons = [
     {text: '%', type: 'action', value: 'percent'},
-    {text: 'AC', type: 'action', value: 'clear'},
-    {text: 'C', type: 'action', value: ''},
+    {text: 'AC', type: 'action', value: 'absolute-clear'},
+    {text: 'C', type: 'action', value: 'clear'},
     {text: '⌫', type: 'action', value: 'backspace'},
 
     {text: '1/x', type: 'action', value: 'inverse'},
@@ -27,7 +27,7 @@ const calculatorButtons = [
     { text: '3', type: 'number', value: '3' },
     {text: '+', type: 'operator', value: '+'},
 
-    {text: '+/-', type: 'equals', value: 'negate'},
+    {text: '+/-', type: 'action', value: 'negate'},
     { text: '0', type: 'number', value: '0' },
     { text: '.', type: 'number', value: '.' },
     {text: '=', type: 'equals', value: '='}
@@ -103,7 +103,15 @@ function handleInput(type, value) {
       break;
 
     case 'operator':
-      firstNumber = display.textContent;
+      if (firstNumber !== '' && operator !== '') {
+        secondNumber = display.textContent;
+        const result = calculate(Number(firstNumber), Number(secondNumber), operator);
+        updateDisplay(String(result));
+        firstNumber = String(result);
+      } else {
+        firstNumber = display.textContent;
+      }
+
       operator = value;
       shouldResetDisplay = true;      
       break;
@@ -115,40 +123,69 @@ function handleInput(type, value) {
       break;
 
     case 'action':
-      console.log(`Es una acción especial: ${value}`);
-      // Aquí manejarás 'clear' (AC), cambiar signo (+/-), etc.
+
       if (value === 'negate') {
-        const result = negate(Number(firstNumber));
+        const currentValue = display.textContent;
+        const result = negate(Number(currentValue));
         updateDisplay(String(result));
 
-      } else if (value === 'clear') {
+      } else if (value === 'absolute-clear') {
         firstNumber = '';
         operator = '';
         secondNumber = '';
         shouldResetDisplay = true;
         updateDisplay('0');
       
-      } else if (value === 'percent') {
-        if (display.textContent === '0') return;
-        
-        const currentValue = Number(display.textContent);
-        const result = (Number(firstNumber) * currentValue)/100;
+      } else if (value === 'clear') {
+        secondNumber = '';
+        updateDisplay('0');
 
-        secondNumber = String(result);
-        updateDisplay(secondNumber);
-        shouldResetDisplay = true;
       
-      } else if (value === 'backspace') {
-        if(display.textContent === '0') return;
+      } else if (value === 'percent') {
+          if (display.textContent === '0') return;
+          
+          const currentValue = Number(display.textContent);
+          const result = (Number(firstNumber) * currentValue)/100;
 
-        const currentValue = display.textContent.slice(0, -1);
-        updateDisplay(currentValue || '0');
-      }
+          secondNumber = String(result);
+          updateDisplay(secondNumber);
+          shouldResetDisplay = true;
+        
+        } else if (value === 'backspace') {
+          if(display.textContent === '0') return;
 
-      break;
+          const currentValue = display.textContent.slice(0, -1);
+          updateDisplay(currentValue || '0');
+        
+        } else if (value === 'inverse') {
+          if (display.textContent === '0') return;
 
-    default:
-      console.warn('Tipo de botón no reconocido');
+          const currentValue = Number(display.textContent);
+          const result = currentValue ** (-1);
+          updateDisplay(String(result));
+          shouldResetDisplay = true;
+        
+        } else if (value === 'power') {
+          if (display.textContent === '0') return;
+
+          const currentValue = Number(display.textContent);
+          const result = currentValue ** (2);
+          updateDisplay(String(result));
+          shouldResetDisplay = true;
+        
+        } else if (value === 'sqrt') {
+          if (display.textContent === '0') return;
+
+          const currentValue = Number(display.textContent);
+          const result = currentValue ** (1/2);
+          updateDisplay(String(result));
+          shouldResetDisplay = true;
+        }
+
+        break;
+
+      default:
+        console.warn('Tipo de botón no reconocido');
   }
 }
 
