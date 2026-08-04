@@ -117,6 +117,9 @@ function handleInput(type, value) {
       break;
 
     case 'equals':
+      if (firstNumber === '') {
+        return;
+      }
       secondNumber = display.textContent;
       const result = calculate(Number(firstNumber), Number(secondNumber), operator);
       updateDisplay(String(result));
