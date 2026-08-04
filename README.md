@@ -33,3 +33,7 @@ Este proyecto muestra una calculadora en pantalla con operaciones basicas y vari
 
 - No requiere instalacion de dependencias ni proceso de build.
 - El proyecto esta pensado para ejecutarse directamente como una pagina estatica.
+
+## Captura de Pantalla
+
+(./images/cap_app.png)
