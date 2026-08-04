@@ -82,11 +82,18 @@ let firstNumber = '';
 let operator = '';
 let secondNumber = '';
 let shouldResetDisplay = false;
+let shouldStartNewCalculation = false;
+
+function resetCalculationState() {
+  firstNumber = '';
+  operator = '';
+  secondNumber = '';
+}
 
 const display = document.querySelector('#display');
 function updateDisplay(text) {
   if(typeof text === 'number') {
-    display.textContent = formatResult(Number(text));
+    display.textContent = formatResult(text);
   } else {
     display.textContent = text;
   }
@@ -95,7 +102,20 @@ function updateDisplay(text) {
 function handleInput(type, value) {
   switch (type) {
     case 'number':
-      console.log(`Es un número o punto: ${value}`);
+      if (shouldStartNewCalculation) {
+        resetCalculationState();
+
+        if (value === '.') {
+          updateDisplay('0.');
+        } else {
+          updateDisplay(value);
+        }
+
+        shouldStartNewCalculation = false;
+        shouldResetDisplay = false;
+        break;
+      }
+      
       if (value === '.' && display.textContent.includes('.')) return;
 
       if (display.textContent === '0' || shouldResetDisplay) {
@@ -107,6 +127,14 @@ function handleInput(type, value) {
       break;
 
     case 'operator':
+      if (shouldStartNewCalculation) {
+        firstNumber = display.textContent;
+        operator = value;
+        shouldStartNewCalculation = false;
+        shouldResetDisplay = true;
+        break;
+      }
+
       if (shouldResetDisplay) {
         operator = value;
         break;
@@ -115,7 +143,7 @@ function handleInput(type, value) {
       if (firstNumber !== '' && operator !== '') {
         secondNumber = display.textContent;
         const result = calculate(Number(firstNumber), Number(secondNumber), operator);
-        updateDisplay(String(result));
+        updateDisplay(result);
         firstNumber = String(result);
       } else {
         firstNumber = display.textContent;
@@ -131,7 +159,9 @@ function handleInput(type, value) {
       }
       secondNumber = display.textContent;
       const result = calculate(Number(firstNumber), Number(secondNumber), operator);
-      updateDisplay(String(result));
+      updateDisplay(result);
+      shouldResetDisplay = true;
+      shouldStartNewCalculation = true;
       break;
 
     case 'action':
@@ -139,12 +169,10 @@ function handleInput(type, value) {
       if (value === 'negate') {
         const currentValue = display.textContent;
         const result = negate(Number(currentValue));
-        updateDisplay(String(result));
+        updateDisplay(result);
 
       } else if (value === 'absolute-clear') {
-        firstNumber = '';
-        operator = '';
-        secondNumber = '';
+        resetCalculationState();
         shouldResetDisplay = true;
         updateDisplay('0');
       
@@ -174,7 +202,7 @@ function handleInput(type, value) {
 
           const currentValue = Number(display.textContent);
           const result = currentValue ** (-1);
-          updateDisplay(String(result));
+          updateDisplay(result);
           shouldResetDisplay = true;
         
         } else if (value === 'power') {
@@ -182,7 +210,7 @@ function handleInput(type, value) {
 
           const currentValue = Number(display.textContent);
           const result = currentValue ** (2);
-          updateDisplay(String(result));
+          updateDisplay(result);
           shouldResetDisplay = true;
         
         } else if (value === 'sqrt') {
@@ -190,7 +218,7 @@ function handleInput(type, value) {
 
           const currentValue = Number(display.textContent);
           const result = currentValue ** (1/2);
-          updateDisplay(String(result));
+          updateDisplay(result);
           shouldResetDisplay = true;
         }
 
