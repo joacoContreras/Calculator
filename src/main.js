@@ -8,8 +8,8 @@ const calculatorButtons = [
     {text: '⌫', type: 'action', value: 'backspace'},
 
     {text: '1/x', type: 'action', value: 'inverse'},
-    {text: 'x^2', type: 'action', value: 'power'},
-    {text: 'sqrt(x)', type: 'action', value: 'sqrt'},
+    {text: 'x²', type: 'action', value: 'power'},
+    {text: '√x', type: 'action', value: 'sqrt'},
     {text: '÷', type: 'operator', value: '/'},
 
     { text: '7', type: 'number', value: '7' },
@@ -137,6 +137,12 @@ function handleInput(type, value) {
         secondNumber = String(result);
         updateDisplay(secondNumber);
         shouldResetDisplay = true;
+      
+      } else if (value === 'backspace') {
+        if(display.textContent === '0') return;
+
+        const currentValue = display.textContent.slice(0, -1);
+        updateDisplay(currentValue || '0');
       }
 
       break;
